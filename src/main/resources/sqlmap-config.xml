@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.bw.entity.Cinemal" alias="cinemal"/>
+		<typeAlias type="com.bw.entity.Type" alias="type"/>
+		<typeAlias type="com.bw.entity.Cin_Type" alias="cin_type"/>
+	</typeAliases>
+	<!-- 添加分页插件 -->
+	<plugins>
+	     <plugin interceptor="com.github.pagehelper.PageHelper">
+	       <property name="dialect" value="mysql"></property>
+	     </plugin>
+	</plugins>
+	
+	<mappers>
+		<mapper resource="com/bw/mapper/CinemalMapper.xml"></mapper>
+	</mappers>
+	
+</configuration> 

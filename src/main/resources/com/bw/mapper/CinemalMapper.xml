@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bw.mapper.CinemalDao">
+	<select id="findAll" parameterType="map" resultType="cinemal">
+		select c.*,GROUP_CONCAT(t.tname) 'tname' from cinemal c,type t,cin_type ct where c.cid = ct.cid and t.tid = ct.tid 
+		<if test="cname != null and cname != ''">
+			and c.cname like concat("%",#{cname},"%")
+		</if>
+		GROUP BY c.cid
+	</select>
+	
+	<select id="findTypeAll" resultType="type">
+		select * from type
+	</select>
+
+	<insert id="insertCinemal" parameterType="cinemal">
+		insert into cinemal(cname,cdesc,author,begintime) values(#{cname},#{cdesc},#{author},#{begintime})
+		<selectKey keyProperty="cid" resultType="int" order="AFTER">
+			select last_insert_id() as cid
+		</selectKey>
+	</insert>
+	<insert id="insertCin_Type" parameterType="cin_type">
+		insert into cin_type(cid,tid) values(#{cid},#{tid})
+	</insert>
+	<update id="updateCinemal" parameterType="cinemal">
+		update cinemal set cname=#{cname},cdesc=#{cdesc},author=#{author},begintime=#{begintime} where cid=#{cid}
+	</update>
+	
+	<select id="findCinemalByCid" parameterType="int" resultType="cinemal">
+		select c.*,GROUP_CONCAT(t.tname) 'tname',GROUP_CONCAT(t.tid) 'tid' from cinemal c,type t,cin_type ct where c.cid = ct.cid and t.tid = ct.tid and c.cid=#{0} GROUP BY c.cid
+	</select>
+	
+	<delete id="deleteCin_TypeByCid" parameterType="int">
+		delete from cin_type where cid=#{0}
+	</delete>
+	
+	<delete id="deleteCinemal">
+		delete from cinemal where cid in 
+		<foreach collection="array" item="cid" open="(" close=")" separator=",">
+			#{cid}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteCin_Type">
+		delete from cin_type where cid in
+		<foreach collection="array" item="cid" open="(" close=")" separator=",">
+			#{cid}
+		</foreach>
+	</delete>
+</mapper>
