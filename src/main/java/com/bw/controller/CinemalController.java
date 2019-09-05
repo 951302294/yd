@@ -35,7 +35,7 @@ public class CinemalController {
 		
 		//将模糊值放入区间
 		map.put("cname", cname);
-		
+		System.out.println(111);
 		//使用分页工具类
 		PageHelper page = new PageHelper();
 		page.startPage(pageNum, 2);
